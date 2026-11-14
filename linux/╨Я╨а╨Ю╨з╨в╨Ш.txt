@@ -1,0 +1,11 @@
+AuraWorld Launcher для Linux
+
+1. Поставь системную библиотеку окна (один раз):
+     Arch / Manjaro:   sudo pacman -S webkit2gtk-4.1
+     Ubuntu / Debian:  sudo apt install libwebkit2gtk-4.1-0
+     Fedora:           sudo dnf install webkit2gtk4.1
+2. Запусти ./install.sh — лаунчер появится в меню приложений.
+   Можно и без установки: ./auraworld-launcher
+
+Если окно пустое или мерцает (бывает на видеокартах NVIDIA):
+     WEBKIT_DISABLE_DMABUF_RENDERER=1 auraworld-launcher

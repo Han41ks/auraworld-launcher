@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>AuraWorld Launcher</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg"></div>
+<aside class="sidebar">
+	<div class="logo"><span class="logo-mark">◆</span><span id="server-name">AuraWorld</span></div>
+	<nav>
+		<button class="nav active" data-page="play">▶&nbsp; Играть</button>
+		<button class="nav" data-page="builds">▦&nbsp; Сборки</button>
+		<button class="nav" data-page="catalog">⌕&nbsp; Каталог</button>
+		<button class="nav" data-page="java">☕&nbsp; Java</button>
+		<button class="nav" data-page="accounts">☺&nbsp; Аккаунт и скин</button>
+		<button class="nav" data-page="settings">⚙&nbsp; Настройки</button>
+	</nav>
+	<div class="sidebar-foot" id="launcher-version"></div>
+</aside>
+
+<main>
+	<!-- ИГРАТЬ -->
+	<section class="page active" id="page-play">
+		<div class="hero">
+			<h1 id="hero-title">AuraWorld</h1>
+			<p class="muted" id="hero-sub"></p>
+		</div>
+		<div class="card play-card">
+			<div class="account-chip" id="account-chip"></div>
+			<label>Сборка
+				<select id="play-instance"></select>
+			</label>
+			<button id="play-btn" class="btn-play">ИГРАТЬ</button>
+		</div>
+		<label class="check autojoin" id="autojoin-wrap">
+			<input type="checkbox" id="autojoin">
+			<span>Сразу зайти на сервер <b id="autojoin-name">AuraWorld</b></span>
+			<span class="muted small" id="autojoin-hint"></span>
+		</label>
+		<div class="progress-wrap hidden" id="progress-wrap">
+			<div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+			<div class="muted small" id="progress-text"></div>
+		</div>
+		<div class="error hidden" id="play-error"></div>
+		<details class="log-box">
+			<summary>Журнал игры</summary>
+			<pre id="game-log"></pre>
+		</details>
+	</section>
+
+	<!-- СБОРКИ -->
+	<section class="page" id="page-builds">
+		<div class="builds-layout">
+			<div class="builds-list card">
+				<div class="row-between">
+					<h2>Сборки</h2>
+					<button id="new-build" class="btn-small btn-accent">+ Новая</button>
+				</div>
+				<div id="builds"></div>
+			</div>
+			<div class="build-details card" id="build-details"></div>
+		</div>
+	</section>
+
+	<!-- КАТАЛОГ -->
+	<section class="page" id="page-catalog">
+		<div class="catalog-top">
+			<div class="type-tabs" id="type-tabs">
+				<button class="tab active" data-type="mod">Моды</button>
+				<button class="tab" data-type="resourcepack">Ресурспаки</button>
+				<button class="tab" data-type="shader">Шейдеры</button>
+			</div>
+			<label class="inline">В сборку
+				<select id="catalog-target"></select>
+			</label>
+		</div>
+		<div class="catalog-layout">
+			<aside class="card filters" id="filters"></aside>
+			<div>
+				<div class="search-row">
+					<input id="catalog-query" placeholder="Поиск по Modrinth..." spellcheck="false">
+					<select id="catalog-sort">
+						<option value="relevance">По релевантности</option>
+						<option value="downloads">По скачиваниям</option>
+						<option value="follows">По подписчикам</option>
+						<option value="newest">Новые</option>
+						<option value="updated">Недавно обновлённые</option>
+					</select>
+				</div>
+				<div class="muted small" id="catalog-info"></div>
+				<div id="catalog-results"></div>
+				<div class="pager" id="pager"></div>
+			</div>
+		</div>
+	</section>
+
+	<!-- JAVA -->
+	<section class="page" id="page-java">
+		<div class="card">
+			<h2>Java</h2>
+			<p class="muted small">Лаунчер сам скачивает нужную Java при запуске игры. Здесь можно поставить её заранее одним кликом (официальные сборки Eclipse Temurin).</p>
+			<div id="java-list"></div>
+		</div>
+	</section>
+
+	<!-- АККАУНТЫ -->
+	<section class="page" id="page-accounts">
+		<div class="card">
+			<h2>Аккаунты</h2>
+			<div id="account-list"></div>
+			<div class="section-title">Добавить</div>
+			<div class="search-row">
+				<input id="offline-nick" maxlength="16" placeholder="Ник (без лицензии)" spellcheck="false">
+				<button class="btn-small" id="add-offline">Добавить по нику</button>
+			</div>
+			<div class="ms-row">
+				<button class="btn-ms" id="login-ms"><span class="ms-logo"><i></i><i></i><i></i><i></i></span>Войти через Microsoft</button>
+				<div class="muted small" id="ms-hint"></div>
+			</div>
+			<div class="error hidden" id="account-error"></div>
+		</div>
+
+		<div class="card skin-card">
+			<div class="row-between">
+				<h2>Скин</h2>
+				<div class="new-skin">
+					<button class="btn-small btn-accent" id="skin-new">+ Новый скин</button>
+					<div class="dropdown hidden" id="skin-new-menu">
+						<button data-new="steve">Шаблон «Стив»</button>
+						<button data-new="alex">Шаблон «Алекс»</button>
+						<button data-new="blank">Пустой</button>
+						<button data-new="file">Загрузить PNG...</button>
+						<button data-new="licensed">Скин лицензии по нику...</button>
+					</div>
+				</div>
+			</div>
+			<div class="skin-list" id="skin-list"></div>
+
+			<div class="editor-tools">
+				<button class="tool active" data-tool="brush" title="Кисть (B)">✎</button>
+				<button class="tool" data-tool="eraser" title="Ластик (E)">⌫</button>
+				<button class="tool" data-tool="fill" title="Заливка части (F)">◧</button>
+				<button class="tool" data-tool="picker" title="Пипетка (I) — или правая кнопка мыши">⊙</button>
+				<span class="sep"></span>
+				<input type="color" id="skin-color" value="#19c3b0" title="Цвет">
+				<div class="palette" id="palette"></div>
+				<span class="sep"></span>
+				<button class="tool" id="skin-undo" title="Отменить (Ctrl+Z)">↶</button>
+				<button class="tool" id="skin-redo" title="Повторить (Ctrl+Y)">↷</button>
+				<span class="sep"></span>
+				<div class="layer-pick">
+					<button class="tab active" data-layer="base" title="Кожа и основная одежда">Основа</button>
+					<button class="tab" data-layer="outer" title="Второй слой: шапка, куртка, рукава, штанины">Второй слой</button>
+				</div>
+			</div>
+
+			<div class="skin-layout">
+				<div class="skin-3d-wrap">
+					<canvas id="skin-3d"></canvas>
+					<div class="part-hint" id="hint-3d"></div>
+					<div class="muted small hint-3d-help">Рисуй прямо по модели · тяни мимо модели — повернуть · колесо — приблизить</div>
+				</div>
+				<div class="skin-side">
+					<div class="skin-uv">
+						<div class="row-between"><span class="muted small">Развёртка — для точной работы</span><label class="check small"><input type="checkbox" id="skin-guides" checked> Подсказки</label></div>
+						<div class="editor-canvas-wrap"><canvas id="skin-canvas" width="512" height="512"></canvas><div class="part-hint" id="part-hint"></div></div>
+					</div>
+					<div class="variant-pick">
+						<button class="tab active" data-variant="classic">Обычные руки</button>
+						<button class="tab" data-variant="slim">Тонкие руки</button>
+					</div>
+					<label class="check"><input type="checkbox" id="skin-walk"> Анимация ходьбы</label>
+					<input id="skin-name" maxlength="32" placeholder="Название скина" spellcheck="false">
+					<div class="skin-actions">
+						<button class="btn-small btn-accent" id="skin-wear">Надеть</button>
+						<button class="btn-small" id="skin-save">Сохранить</button>
+						<button class="btn-small" id="skin-export">Скачать PNG</button>
+						<button class="btn-small btn-danger" id="skin-delete">Удалить</button>
+					</div>
+					<div class="muted small" id="skin-status"></div>
+				</div>
+			</div>
+			<div class="muted small skin-note">Скин увидят все игроки на сервере <b id="skin-server-name">AuraWorld</b> после входа через лаунчер — даже без лицензии. В одиночной игре скин стандартный.</div>
+		</div>
+	</section>
+
+	<!-- НАСТРОЙКИ -->
+	<section class="page" id="page-settings">
+		<div class="card settings">
+			<h2>Настройки</h2>
+			<div class="setting">
+				<div><b>Папка игры</b><div class="muted small" id="root-path"></div></div>
+				<button id="choose-root" class="btn-small">Изменить</button>
+			</div>
+			<div class="setting">
+				<div><b>Память для игры</b><div class="muted small"><span id="mem-val"></span> ГБ</div></div>
+				<input type="range" id="memory" min="2" max="16" step="1">
+			</div>
+			<div class="setting">
+				<div><b>Скрывать лаунчер во время игры</b></div>
+				<input type="checkbox" id="hide-launch">
+			</div>
+			<div class="setting column">
+				<div class="row-between" style="width:100%"><b>Оформление</b><button class="btn-small" id="show-guide">Показать гайд снова</button></div>
+				<div class="themes" id="themes"></div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Новая сборка -->
+<div class="modal hidden" id="modal-new">
+	<div class="modal-box small-box">
+		<h2>Новая сборка</h2>
+		<label>Название<input id="nb-name" maxlength="40" value="Моя сборка"></label>
+		<label>Версия Minecraft
+			<select id="nb-version"></select>
+		</label>
+		<label class="check"><input type="checkbox" id="nb-snapshots"> Показывать снапшоты</label>
+		<div class="loader-pick">
+			<label class="check"><input type="radio" name="nb-loader" value="fabric" checked> Fabric (с модами)</label>
+			<label class="check"><input type="radio" name="nb-loader" value="vanilla"> Без модов</label>
+		</div>
+		<div class="muted small" id="nb-note"></div>
+		<div class="error hidden" id="nb-error"></div>
+		<div class="row-end">
+			<button class="btn-small" data-close>Отмена</button>
+			<button class="btn-small btn-accent" id="nb-create">Создать</button>
+		</div>
+	</div>
+</div>
+
+<!-- Перенос сборки -->
+<div class="modal hidden" id="modal-migrate">
+	<div class="modal-box migrate-box">
+		<h2 id="mg-title">Перенос сборки</h2>
+		<div class="search-row">
+			<select id="mg-version"></select>
+			<button class="btn-small btn-accent" id="mg-check">Проверить моды</button>
+		</div>
+		<div class="muted small" id="mg-status">Выбери версию — лаунчер проверит, какие моды для неё есть.</div>
+		<div class="progress hidden" id="mg-progress"><div class="progress-bar" id="mg-bar"></div></div>
+		<div id="mg-results"></div>
+		<label class="check hidden" id="mg-worlds-wrap"><input type="checkbox" id="mg-worlds" checked> Перенести миры и настройки (копией — старая сборка останется как была)</label>
+		<div class="row-end">
+			<button class="btn-small" data-close>Закрыть</button>
+			<button class="btn-small btn-accent hidden" id="mg-apply">Создать сборку</button>
+		</div>
+	</div>
+</div>
+
+<!-- Гайд первого запуска -->
+<div class="modal hidden" id="modal-guide">
+	<div class="modal-box guide-box">
+		<div class="guide-dots" id="guide-dots"></div>
+		<div class="guide-step" id="guide-step"></div>
+		<div class="row-between guide-nav">
+			<button class="btn-small" id="guide-back">Назад</button>
+			<button class="btn-small btn-accent" id="guide-next">Далее</button>
+		</div>
+	</div>
+</div>
+
+<!-- Карточка проекта Modrinth -->
+<div class="modal hidden" id="modal-project">
+	<div class="modal-box project-box" id="project-box"></div>
+</div>
+
+<script src="vendor/marked.min.js"></script>
+<script src="vendor/purify.min.js"></script>
+<script src="vendor/skinview3d.bundle.js"></script>
+<script src="bridge.js"></script>
+<script src="app.js"></script>
+<script src="skin.js"></script>
+</body>
+</html>
