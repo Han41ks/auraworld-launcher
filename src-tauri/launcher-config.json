@@ -1,10 +1,10 @@
 {
   "serverName": "AuraWorld",
-  "serverAddress": "",
+  "serverAddress": "r2t2.pro",
   "mcVersion": "26.3",
   "fabricLoader": "0.19.5",
-  "msClientId": "",
-  "manifestUrl": "",
+  "msClientId": "00000000402b5328",
+  "manifestUrl": "https://raw.githubusercontent.com/Han41k/auraworld-launcher/main/auraworld-mods.json",
   "defaultManifest": {
     "mandatory": [
       {
