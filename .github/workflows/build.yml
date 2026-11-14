@@ -1,0 +1,55 @@
+# Сборка лаунчера для Windows и Linux. Запускается при каждой отправке в main
+# и вручную (вкладка Actions → «Сборка лаунчера» → Run workflow).
+# Готовые файлы появляются внизу страницы запуска, в разделе Artifacts.
+name: Сборка лаунчера
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['auraworld-mods.json', 'mods/**', '*.md']
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Сборка
+        working-directory: src-tauri
+        run: cargo build --release --features custom-protocol
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AuraWorld-Launcher-windows
+          path: src-tauri/target/release/auraworld-launcher.exe
+
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Библиотеки
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libssl-dev pkg-config
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Тесты и сборка
+        working-directory: src-tauri
+        run: |
+          cargo test --release
+          cargo build --release --features custom-protocol
+      - name: Упаковка
+        run: |
+          mkdir -p out/auraworld-launcher
+          cp src-tauri/target/release/auraworld-launcher linux/* out/auraworld-launcher/
+          cp src-tauri/icons/256x256.png out/auraworld-launcher/auraworld-launcher.png
+          tar -C out -czf AuraWorld-Launcher-linux-x86_64.tar.gz auraworld-launcher
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AuraWorld-Launcher-linux
+          path: AuraWorld-Launcher-linux-x86_64.tar.gz
