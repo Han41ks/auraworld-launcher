@@ -4,7 +4,7 @@
     { "name": "Fabric API", "modrinth": "fabric-api" },
     {
       "name": "AuraWorld",
-      "url": "https://raw.githubusercontent.com/Han41ks/auraworld-launcher/main/mods/auraworld_client-0.7.6.jar",
+      "url": "https://raw.githubusercontent.com/Han41ks/auraworld-launcher/main/mods/auraworld_client-0.7.8.jar",
       "sha1": "384373cedae0b4627eec029c8de7464c0f097795"
     }
   ],
