@@ -1,0 +1,67 @@
+{
+  "serverName": "AuraWorld",
+  "serverAddress": "r2t2.pro",
+  "mcVersion": "26.3",
+  "fabricLoader": "0.19.5",
+  "msClientId": "00000000402b5328",
+  "manifestUrl": "https://raw.githubusercontent.com/Han41ks/auraworld-launcher/main/auraworld-mods.json",
+  "defaultManifest": {
+    "mandatory": [
+      {
+        "name": "Fabric API",
+        "modrinth": "fabric-api"
+      },
+      {
+        "name": "AuraWorld",
+        "bundled": "auraworld_client-0.7.8.jar"
+      }
+    ],
+    "officialPack": [
+      {
+        "name": "Sodium",
+        "modrinth": "sodium"
+      },
+      {
+        "name": "Iris Shaders",
+        "modrinth": "iris"
+      },
+      {
+        "name": "Simple Voice Chat",
+        "modrinth": "simple-voice-chat"
+      },
+      {
+        "name": "No Chat Reports",
+        "modrinth": "no-chat-reports"
+      },
+      {
+        "name": "Continuity",
+        "modrinth": "continuity"
+      },
+      {
+        "name": "Bobby",
+        "modrinth": "bobby"
+      },
+      {
+        "name": "Entity Culling",
+        "modrinth": "entityculling"
+      },
+      {
+        "name": "LambDynamicLights",
+        "modrinth": "lambdynamiclights"
+      },
+      {
+        "name": "Lithium",
+        "modrinth": "lithium"
+      },
+      {
+        "name": "Mod Menu",
+        "modrinth": "modmenu"
+      },
+      {
+        "name": "Zoomify",
+        "modrinth": "zoomify"
+      }
+    ]
+  },
+  "mineskinApiKey": ""
+}
